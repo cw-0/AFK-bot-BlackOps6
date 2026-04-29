@@ -1,6 +1,6 @@
-env/
-*.pyc
-__pycache__/
-*.pyd
-*.log
-.DS_Store
+cmake-build-*/
+build/
+*.exe
+*.o
+*.dll
+*.idea
