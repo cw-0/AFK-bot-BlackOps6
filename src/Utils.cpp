@@ -30,3 +30,7 @@ void Utils::keyPress(WORD SCAN_CODE, const char* keyName) {
         return;
     }
 }
+
+void Utils::releaseAllKeys() {
+ // TODO:
+}

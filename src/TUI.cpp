@@ -3,21 +3,22 @@
 //
 
 #include <chrono>
+#include "State.h"
+#include <thread>
 #include <iostream>
 #include <limits>
 #include "Movement.h"
+#include "Presets.h"
 #include "Script.h"
-#include <thread>
 #include "TUI.h"
 #include "Utils.h"
-
 
 void TUI::run() {
     while (true){
         Utils::clearTerm();
         switch (int choice = menu()) {
             case 0:
-                exit(0);
+                return;
 
             case 1:
                 startBot(5);
@@ -42,8 +43,8 @@ int TUI::menu() {
 
     std::cout << "1. Start\n";
     std::cout << "2. Settings\n";
-    std::cout << "0. Exit" << std::endl;
-
+    std::cout << "0. Exit\n";
+    std::cout << std::endl;
     std::cout << "> ";
     std::cin >> choice;
     return choice;
@@ -52,18 +53,19 @@ int TUI::menu() {
 }
 
 void TUI::startBot(int waitTime) {
+    //TODO: Add Choice Of Preset
+    std::thread listener(State::changeState);
     for (int i = waitTime; i > 0; i--) {
         std::cout << "Starting in " << i << '\n';
         std::this_thread::sleep_for(std::chrono::seconds(1));
+        State::checkState();
     }
     Utils::clearTerm();
     for (int i = 0; i < 3; i++) {
-        Script::commonSoldier();
-        Script::crackhead();
+        Presets::commonSoldier();
+        Presets::crackhead();
     }
-    exit(0);
-
-
+    State::endThread();
 }
 
 void TUI::settingsMenu() {

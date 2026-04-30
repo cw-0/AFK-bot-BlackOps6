@@ -41,6 +41,16 @@ void Movement::move(int seconds, std::string const& direction, std::string const
     WORD d2SCAN_CODE = getScanCode(direction2);
     WORD SHIFT_CODE = 0x2A; // Left Shift
 
+    std::cout << "Moving " << direction << (d2SCAN_CODE ? "and " + direction2 : "") << " for " << seconds << " seconds";
+    if (slide) {
+        std::cout << " and sliding";
+    }
+    if (dive) {
+        std::cout << " and diving";
+    }
+    std::cout << '\n';
+
+
     INPUT d1KeyUp{};
     d1KeyUp.type = INPUT_KEYBOARD;
     d1KeyUp.ki.wScan = d1SCAN_CODE;
@@ -162,27 +172,32 @@ void Movement::move(int seconds, std::string const& direction, std::string const
 } // END MOVE
 
 void Movement::jump() {
+    std::cout << "Jumping\n";
     WORD SPACEBAR_CODE = 0x39;
     Utils::keyPress(SPACEBAR_CODE, "Space Bar");
 }
 
 void Movement::crouch() {
+    std::cout << "Crouching\n";
     WORD Q_KEY = 0x10; // Q is my keybind for crouch
     Utils::keyPress(Q_KEY, "Q Key");
 }
 
 void Movement::prone() {
+    std::cout << "Proning\n";
     WORD CTRL_CODE = 0x1D;
     Utils::keyPress(CTRL_CODE, "Left Control");
 }
 
 void Movement::grenade() {
+    std::cout << "Throwing grenade\n";
     WORD O_KEY = 0x18;
     Utils::keyPress(O_KEY, "O Key");
 
 }
 
 void Movement::changeWeapon() {
+    std::cout << "Changing Weapon\n";
     WORD ONE_KEY = 0x02; // Top Num Key 1
     Utils::keyPress(ONE_KEY, "num1 Key");
 }
@@ -204,6 +219,7 @@ void Movement::rotate(int totalDx, int totalDy, int steps, int delayMs) {
     ///     steps = how many tiny movements (smoothness | more steps == slower)
     ///     delayMs = delay between each step
     ///////////////////////////////////////////////////////
+    std::cout << "Rotating: (" << totalDx << ", " << totalDy << ") in " << steps << " steps with " << delayMs << "ms delay\n";
     if (steps <= 0) {
         return;
     }

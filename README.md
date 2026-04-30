@@ -2,7 +2,7 @@
 Rewritten in C++ for speed and ease of use
 
 ## TODO
-- [ ] Add Hotkeys For Start/Stop
+- [x] Add Hotkeys For Start/Stop
 - [ ] Add Clean Up At Exit
 - [ ] Add "In Game" Detection
 - [ ] Add Killcam Detection
