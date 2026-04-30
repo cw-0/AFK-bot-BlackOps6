@@ -55,6 +55,7 @@ int TUI::menu() {
 void TUI::startBot(int waitTime) {
     //TODO: Add Choice Of Preset
     std::thread listener(State::changeState);
+    std::thread inGameCheck(State::checkInGame);
     for (int i = waitTime; i > 0; i--) {
         std::cout << "Starting in " << i << '\n';
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -65,7 +66,7 @@ void TUI::startBot(int waitTime) {
         Presets::commonSoldier();
         Presets::crackhead();
     }
-    State::endThread();
+    State::endThreads();
 }
 
 void TUI::settingsMenu() {

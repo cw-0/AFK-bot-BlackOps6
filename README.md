@@ -3,8 +3,8 @@ Rewritten in C++ for speed and ease of use
 
 ## TODO
 - [x] Add Hotkeys For Start/Stop
+- [ ] Add "In Game" Detection (Open CV / Pixel Detection)
 - [ ] Add Clean Up At Exit
-- [ ] Add "In Game" Detection
 - [ ] Add Killcam Detection
 - [ ] Add Loadout Detection
 - [ ] Add Chat Messages
