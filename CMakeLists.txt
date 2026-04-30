@@ -11,6 +11,8 @@ add_executable(afkBO6
         src/TUI.cpp
         src/Utils.cpp
         src/Movement.cpp
+        src/Script.cpp
+        include/Script.h
 )
 
 target_include_directories(afkBO6 PRIVATE

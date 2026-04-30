@@ -1,8 +1,17 @@
 //
 // Created by Caden on 4/29/2026.
 //
+#pragma once
 
-#ifndef AFKBO6_SCRIPT_H
-#define AFKBO6_SCRIPT_H
-
-#endif //AFKBO6_SCRIPT_H
+class Script {
+public:
+    static void lookEyeLevel();
+    static void sprayAuto(int seconds);
+    static void spraySemi(int shots);
+    static void commonSoldier();
+    static void crackhead();
+    static void dropShotSemi(int shots);
+    static void dropShotAuto(int duration);
+    static void runAndJump(int duration, int sprint, bool slide);
+    static void randomScript();
+};

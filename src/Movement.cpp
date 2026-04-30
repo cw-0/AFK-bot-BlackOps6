@@ -12,6 +12,9 @@
 #include <thread>
 #include <iostream>
 
+#include "Utils.h"
+
+
 std::random_device rd;
 std::mt19937 gen(rd());
 
@@ -25,67 +28,181 @@ WORD getScanCode(std::string_view direction) {
     } else if (direction == "left") {
         return 0x1E; // A key
     } else {
-        return 0x11;
+        return 0;
     }
 }
 
-void Movement::walk(int seconds, std::string const& direction, std::string const& direction2) {
-    WORD SCAN_CODE = getScanCode(direction);
-    WORD SCAN_CODE2{};
-    INPUT keyDown{};
-    keyDown.type = INPUT_KEYBOARD;
-    keyDown.ki.wScan = SCAN_CODE;
-    keyDown.ki.dwFlags = KEYEVENTF_SCANCODE;
-    if (SendInput(1, &keyDown, sizeof(INPUT)) != 1) {
-        std::cout << "SendInput keyDown failed. Error: " << GetLastError() << '\n';
+void Movement::move(int seconds, std::string const& direction, std::string const& direction2, int sprint, bool slide, bool dive) {
+    /////////////////////////////////////////
+    /// seconds = How Long Movement Lasts
+    /// sprint = 0 ~ Walk, 1 ~ Sprint, 2 ~ Tac Sprint
+    /////////////////////////////////////////
+    WORD d1SCAN_CODE = getScanCode(direction);
+    WORD d2SCAN_CODE = getScanCode(direction2);
+    WORD SHIFT_CODE = 0x2A; // Left Shift
+
+    INPUT d1KeyUp{};
+    d1KeyUp.type = INPUT_KEYBOARD;
+    d1KeyUp.ki.wScan = d1SCAN_CODE;
+    d1KeyUp.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
+
+    INPUT d1KeyDown{};
+    d1KeyDown.type = INPUT_KEYBOARD;
+    d1KeyDown.ki.wScan = d1SCAN_CODE;
+    d1KeyDown.ki.dwFlags = KEYEVENTF_SCANCODE;
+
+    INPUT d2KeyUp{};
+    d2KeyUp.type = INPUT_KEYBOARD;
+    d2KeyUp.ki.wScan = d2SCAN_CODE;
+    d2KeyUp.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
+
+    INPUT d2KeyDown{};
+    d2KeyDown.type = INPUT_KEYBOARD;
+    d2KeyDown.ki.wScan = d2SCAN_CODE;
+    d2KeyDown.ki.dwFlags = KEYEVENTF_SCANCODE;
+
+    INPUT shiftUp{};
+    shiftUp.type = INPUT_KEYBOARD;
+    shiftUp.ki.wScan = SHIFT_CODE;
+    shiftUp.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
+
+    INPUT shiftDown{};
+    shiftDown.type = INPUT_KEYBOARD;
+    shiftDown.ki.wScan = SHIFT_CODE;
+    shiftDown.ki.dwFlags = KEYEVENTF_SCANCODE;
+
+
+    if (SendInput(1, &d1KeyDown, sizeof(INPUT)) != 1) {
+        std::cout << "SendInput Direction 1 KeyDown failed. Error: " << GetLastError() << '\n';
         return;
     }
 
-    if (direction2 != "none") {
-        SCAN_CODE2 = getScanCode(direction2);
-        INPUT keyDown2{};
-        keyDown2.type = INPUT_KEYBOARD;
-        keyDown2.ki.wScan = SCAN_CODE2;
-        keyDown2.ki.dwFlags = KEYEVENTF_SCANCODE;
-
+    if (d2SCAN_CODE) {
         std::uniform_real_distribution<double> randDelay(0.0, 2.0);
         std::this_thread::sleep_for(std::chrono::duration<double>(randDelay(gen)));
-        if (SendInput(1, &keyDown2, sizeof(INPUT)) != 1) {
-            std::cout << "SendInput keyDown2 failed. Error: " << GetLastError() << '\n';
+        if (SendInput(1, &d2KeyDown, sizeof(INPUT)) != 1) {
+            std::cout << "SendInput Direction 2 KeyDown failed. Error: " << GetLastError() << '\n';
+            return;
+        }
+    }
+
+    // CLICK SPRINT
+    if (sprint == 1 || sprint == 2) {
+        if (SendInput(1, &shiftDown, sizeof(INPUT)) != 1) {
+            std::cout << "SendInput shiftDown failed. Error: " << GetLastError() << '\n';
+            return;
+        }
+
+        std::uniform_real_distribution<double> randDelay(0.2, 0.5);
+        std::this_thread::sleep_for(std::chrono::duration<double>(randDelay(gen)));
+
+        if (SendInput(1, &shiftUp, sizeof(INPUT)) != 1) {
+            std::cout << "SendInput shiftUp failed. Error: " << GetLastError() << '\n';
+            return;
+        }
+    }
+
+    // HOLD TAC SPRINT
+    if (sprint == 2) {
+        // std::uniform_real_distribution<double> randDelay(0.0, 2.0);
+        // std::this_thread::sleep_for(std::chrono::duration<double>(randDelay(gen)));
+        if (SendInput(1, &shiftDown, sizeof(INPUT)) != 1) {
+            std::cout << "SendInput shiftDown failed. Error: " << GetLastError() << '\n';
+            return;
+        }
+    }
+
+    if (slide || dive) {
+        if (slide) {
+            crouch();
+            std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        }
+        if (dive) {
+            prone();
+            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+
+        }
+
+        // re-enable tac sprint
+        if (sprint == 2) {
+            if (SendInput(1, &shiftUp, sizeof(INPUT)) != 1) {
+                std::cout << "SendInput shiftUp failed. Error: " << GetLastError() << '\n';
+                return;
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            if (SendInput(1, &shiftDown, sizeof(INPUT)) != 1) {
+                std::cout << "SendInput shiftDown failed. Error: " << GetLastError() << '\n';
+                return;
+            }
+        }
+    }
+
+
+    // DELAY UNTIL KEYS RELEASED
+    std::this_thread::sleep_for(std::chrono::seconds(seconds));
+
+    // RELEASE TAC SPRINT
+    if (sprint == 2) {
+        if (SendInput(1, &shiftUp, sizeof(INPUT)) != 1) {
+            std::cout << "SendInput shiftUp  failed. Error: " << GetLastError() << '\n';
             return;
         }
 
     }
-
-    std::this_thread::sleep_for(std::chrono::seconds(seconds));
-
-    INPUT keyUp{};
-    keyUp.type = INPUT_KEYBOARD;
-    keyUp.ki.wScan = SCAN_CODE;
-    keyUp.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
-    if (SendInput(1, &keyUp, sizeof(INPUT)) != 1) {
-        std::cout << "SendInput keyUp failed. Error: " << GetLastError() << '\n';
+    if (SendInput(1, &d1KeyUp, sizeof(INPUT)) != 1) {
+        std::cout << "SendInput Direction 1 Key Up failed. Error: " << GetLastError() << '\n';
         return;
     }
-    if (direction2 != "none") {
-        INPUT keyUp2{};
-        keyUp2.type = INPUT_KEYBOARD;
-        keyUp2.ki.wScan = SCAN_CODE2;
-        keyUp2.ki.dwFlags = KEYEVENTF_SCANCODE | KEYEVENTF_KEYUP;
-        if (SendInput(1, &keyUp2, sizeof(INPUT)) != 1) {
+    if (d2SCAN_CODE) {
+        if (SendInput(1, &d2KeyUp, sizeof(INPUT)) != 1) {
             std::cout << "SendInput keyUp failed. Error: " << GetLastError() << '\n';
             return;
         }
-
     }
-} // END WALK
+} // END MOVE
+
+void Movement::jump() {
+    WORD SPACEBAR_CODE = 0x39;
+    Utils::keyPress(SPACEBAR_CODE, "Space Bar");
+}
+
+void Movement::crouch() {
+    WORD Q_KEY = 0x10; // Q is my keybind for crouch
+    Utils::keyPress(Q_KEY, "Q Key");
+}
+
+void Movement::prone() {
+    WORD CTRL_CODE = 0x1D;
+    Utils::keyPress(CTRL_CODE, "Left Control");
+}
+
+void Movement::grenade() {
+    WORD O_KEY = 0x18;
+    Utils::keyPress(O_KEY, "O Key");
+
+}
+
+void Movement::changeWeapon() {
+    WORD ONE_KEY = 0x02; // Top Num Key 1
+    Utils::keyPress(ONE_KEY, "num1 Key");
+}
+
+void Movement::skipKillcam() {
+    WORD E_KEY = 0x12; // E key
+    Utils::keyPress(E_KEY, "E Key");
+
+}
+
+
+
+// --- MOUSE MOVEMENTS ---
 
 void Movement::rotate(int totalDx, int totalDy, int steps, int delayMs) {
     //////////////////////////////////////////////////////////
     ///     totalDx = Total Horizontal Movement
     ///     totalDY = Total Vertical Moement
     ///     steps = how many tiny movements (smoothness | more steps == slower)
-    ///     delayMs = delay between each step (speed)
+    ///     delayMs = delay between each step
     ///////////////////////////////////////////////////////
     if (steps <= 0) {
         return;
@@ -96,7 +213,7 @@ void Movement::rotate(int totalDx, int totalDy, int steps, int delayMs) {
 
     for (int i = 1; i <= steps; ++i) {
         int targetX = totalDx * i / steps;
-        int targetY = totalDy * i / steps;
+        int targetY = -1 * (totalDy * i / steps);
 
         int stepDx = targetX - movedX;
         int stepDy = targetY - movedY;
@@ -120,19 +237,14 @@ void Movement::rotate(int totalDx, int totalDy, int steps, int delayMs) {
 }
 
 void Movement::leftMouseClick() {
-    INPUT mouseDown{};
-    mouseDown.type = INPUT_MOUSE;
-    mouseDown.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-    if (SendInput(1, &mouseDown, sizeof(INPUT)) != 1) {
-        std::cout << "Left click failed. Error: " << GetLastError() << '\n';
-    }
+    INPUT mouseInputs[2] = {};
+    mouseInputs[0].type = INPUT_MOUSE;
+    mouseInputs[0].mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    mouseInputs[1].type = INPUT_MOUSE;
+    mouseInputs[1].mi.dwFlags = MOUSEEVENTF_LEFTUP;
 
-    INPUT mouseUp{};
-    mouseUp.type = INPUT_MOUSE;
-    mouseUp.mi.dwFlags = MOUSEEVENTF_LEFTUP;
-    if (SendInput(1, &mouseUp, sizeof(INPUT)) != 1) {
+    if (SendInput(2, mouseInputs, sizeof(INPUT)) != 2) {
         std::cout << "Left click failed. Error: " << GetLastError() << '\n';
     }
 }
@@ -149,7 +261,7 @@ void Movement::leftMouseHold(bool recoilControl) {
     }
 
     if (recoilControl) {
-        Movement::rotate(0, 500, 500, 1);
+        Movement::rotate(0, -500, 50, 1);
     }
 }
 
@@ -166,19 +278,14 @@ void Movement::leftMouseRelease() {
 }
 
 void Movement::rightMouseClick() {
-    INPUT mouseDown{};
-    mouseDown.type = INPUT_MOUSE;
-    mouseDown.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
-    if (SendInput(1, &mouseDown, sizeof(INPUT)) != 1) {
-        std::cout << "Right click failed. Error: " << GetLastError() << '\n';
-    }
+    INPUT mouseInputs[2] = {};
+    mouseInputs[0].type = INPUT_MOUSE;
+    mouseInputs[0].mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    mouseInputs[1].type = INPUT_MOUSE;
+    mouseInputs[1].mi.dwFlags = MOUSEEVENTF_RIGHTUP;
 
-    INPUT mouseUp{};
-    mouseUp.type = INPUT_MOUSE;
-    mouseUp.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
-    if (SendInput(1, &mouseUp, sizeof(INPUT)) != 1) {
+    if (SendInput(2, mouseInputs, sizeof(INPUT)) != 2) {
         std::cout << "Right click failed. Error: " << GetLastError() << '\n';
     }
 }

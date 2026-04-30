@@ -6,6 +6,7 @@
 #include <iostream>
 #include <limits>
 #include "Movement.h"
+#include "Script.h"
 #include <thread>
 #include "TUI.h"
 #include "Utils.h"
@@ -56,12 +57,12 @@ void TUI::startBot(int waitTime) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     Utils::clearTerm();
+    for (int i = 0; i < 3; i++) {
+        Script::commonSoldier();
+        Script::crackhead();
+    }
+    exit(0);
 
-    Movement::rightMouseHold();
-    Movement::leftMouseHold(true);
-    std::this_thread::sleep_for(std::chrono::seconds(10));
-    Movement::leftMouseRelease();
-    Movement::rightMouseRelease();
 
 }
 
