@@ -12,6 +12,7 @@ int CENTER_MINIMAP_Y { 175 };
 bool IS_PAUSED{};
 bool IS_SOFT_PAUSED{};
 bool IN_GAME{};
+bool RUNNING_BOT = true;
 int MISSED_IN_GAME_CHECK = 0;
 bool needThread = true;
 
@@ -53,6 +54,17 @@ void State::checkInGame() {
     Utils::clearTerm();
     std::cout << (IS_PAUSED ? "Manually Paused\n" : "Paused. Not In Game\n");
    while (IS_PAUSED || IS_SOFT_PAUSED) {
+    if (!IS_PAUSED) {
+     // Utils::keyPress(0x39, "Space Bar"); // Selects Loadout
+     std::this_thread::sleep_for(std::chrono::seconds(3));
+     SetCursorPos(228, 125); // Loadout1 Coord
+     INPUT inputs[2] = {};
+     inputs[0].type = INPUT_MOUSE;
+     inputs[0].mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+     inputs[1].type = INPUT_MOUSE;
+     inputs[1].mi.dwFlags = MOUSEEVENTF_LEFTUP;
+     SendInput(2, inputs, sizeof(INPUT));
+    }
     ;
    }
    Utils::clearTerm();
@@ -75,12 +87,10 @@ void State::changeState() {
     std::cout << "RESUMING\n";
    }
 
-   if (GetKeyState(0xA3) & 0x8000 && IS_PAUSED) { // Right Ctrl (Force Exit)
+   if (GetKeyState(0xA3) & 0x8000) { // Right Ctrl Stop Bot
     Utils::clearTerm();
-    std::cout << "Force Closing.\n";
-    // Utils::releaseAllKeys()
-    // If its paused all keys 'should' be released, assuming there are no checkState() calls during a hold
-    exit(0);
+    std::cout << "Bot Will Stop After Finishing Preset\n";
+    RUNNING_BOT = false;
    }
 
   }

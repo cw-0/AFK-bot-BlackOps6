@@ -2,6 +2,7 @@
 
 extern bool IS_PAUSED;
 extern bool IS_SOFT_PAUSED;
+extern bool RUNNING_BOT;
 extern bool needThread;
 
 class State {

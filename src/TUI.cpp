@@ -61,8 +61,9 @@ void TUI::startBot(int waitTime) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         State::checkState();
     }
+    RUNNING_BOT = true;
     Utils::clearTerm();
-    for (int i = 0; i < 3; i++) {
+    while (RUNNING_BOT){
         Presets::commonSoldier();
         Presets::crackhead();
     }
