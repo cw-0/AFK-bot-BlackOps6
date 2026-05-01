@@ -7,6 +7,7 @@
 #include <thread>
 #include <iostream>
 #include <limits>
+#include "Logger.h"
 #include "Movement.h"
 #include "Presets.h"
 #include "Script.h"
@@ -23,9 +24,11 @@ void TUI::run() {
     while (true){
         switch (int choice = menu()) {
             case 0:
+                Logger::write("Exited Through Menu");
                 return;
 
             case 1:
+                Logger::write("Start Bot Selected In Menu");
                 startBot(3);
 
             case 2:
@@ -89,7 +92,9 @@ int TUI::menu() {
 void TUI::startBot(int waitTime) {
     //TODO: Add Choice Of Preset
     std::thread listener(State::changeState); // Listens for HotKeys
+    Logger::write("Hotkey Listener Thread Started");
     std::thread inGameCheck(State::checkInGame); // Checks for Pixel
+    Logger::write("In Game Detection Thread Started");
     for (int i = waitTime; i > 0; i--) {
         if (IS_PAUSED) { std::cout << "Pausing After Countdown.\n"; }
         std::cout << "Starting in " << i << '\n';
@@ -100,24 +105,41 @@ void TUI::startBot(int waitTime) {
     Utils::clearTerm();
     while (RUNNING_BOT){
         Presets::commonSoldier();
+        Logger::write("Finished commonSoldier Preset");
         Presets::crackhead();
+        Logger::write("Finished crackhead Preset");
     }
     State::endThreads();
+    Logger::write("End Threads Called");
 }
 
 void TUI::settingsMenu() {
+    Logger::write("Settings Menu Entered");
     while (true) {
         Utils::clearTerm();
 
         int choice;
 
+        //TODO:
+            std::cout << "1. Change Log File Destination\n";
+            std::cout << "2. Toggle Log File Verbosity: " << (SEND_VERBOSE ? GREEN + "ON" : RED + "OFF") << RESET << "\n";
+            std::cout << "3. Change Hot Keys\n";
         std::cout << "0. Back\n";
         std::cout << "\n";
         std::cout << "> ";
         std::cin >> choice;
 
         if (choice == 0){
+            Logger::write("Exiting Settings Menu");
             return;
+        } else {
+            std::cout << "Coming Soon\n";
+            std::cout << "Press Enter To Continue...";
+            std::cin.ignore();
+            char tmp = 'x';
+            while (tmp != '\n') {
+                std::cin.get(tmp);
+            }
         }
 
     } // END LOOP

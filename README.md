@@ -7,8 +7,12 @@ Rewritten in C++ for speed and ease of use
 - [x] Add Auto Select Loadout 
 - [x] Handle invalid input
 - [x] Polish TUI
-- [ ] Add Logs
+- [x] Add Logs
 - [ ] Add More Randomness
 - [ ] Add GUI
 - [ ] Improve Clean Up At Exit
 - [ ] Improve Killcam Detection
+
+## Resources
+1. Windows Scan Codes
+    - > https://learn.microsoft.com/en-us/windows/win32/inputdev/about-keyboard-input

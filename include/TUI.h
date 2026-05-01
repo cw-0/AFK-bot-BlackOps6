@@ -5,7 +5,7 @@
 
 class TUI {
 public:
-    static void run();
+    void run();
     static void printTitle();
 
 private:

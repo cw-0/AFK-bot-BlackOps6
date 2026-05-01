@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <limits>
+#include "Logger.h"
 #include "TUI.h"
 #include "Utils.h"
 
@@ -14,6 +15,7 @@
 #include <iostream>
 
 void Utils::clearTerm() {
+    Logger::write("Clear Term Called", true);
     std::system("cls");
     TUI::printTitle();
 }
@@ -31,6 +33,9 @@ void Utils::keyPress(WORD SCAN_CODE, const char* keyName) {
         std::cout << "SendInput " << keyName << " failed. Error: " << GetLastError() << '\n';
         return;
     }
+    std::string cppKeyName = keyName;
+    std::string msg = "keyPress called for key: [" + cppKeyName + "] with SCAN_CODE: [" + std::to_string(SCAN_CODE) + "]\n";
+    Logger::write(msg.c_str());
 }
 
 void Utils::releaseAllKeys() {
