@@ -4,6 +4,7 @@
 #include <ctime>
 
 bool SEND_VERBOSE = true; // Get this value from .INI ~ add a toggle
+bool LOG_FILE_ENABLED = true;
 
 const char* LOG_FILE_PATH = Logger::getFilePath();
 std::ofstream LOG_FILE;

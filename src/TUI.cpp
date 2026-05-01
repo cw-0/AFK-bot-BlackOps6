@@ -133,8 +133,9 @@ void TUI::settingsMenu() {
 
         //TODO:
             std::cout << "1. Change Log File Destination\n";
-            std::cout << "2. Toggle Log File Verbosity: " << (SEND_VERBOSE ? GREEN + "ON" : RED + "OFF") << RESET << "\n";
-            std::cout << "3. Change Hot Keys\n";
+            std::cout << "2. Log To File: " << (LOG_FILE_ENABLED ? GREEN + "ENABLED" : RED + "DISABLED") << RESET << "\n";
+            std::cout << "3. Toggle Log File Verbosity: " << (SEND_VERBOSE ? GREEN + "ON" : RED + "OFF") << RESET << "\n";
+            std::cout << "4. Change Hot Keys\n";
         std::cout << "0. Back\n";
         std::cout << "\n";
         std::cout << "> ";

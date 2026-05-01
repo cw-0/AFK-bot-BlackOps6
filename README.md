@@ -146,6 +146,7 @@ In Call of Duty settings set mini map player color to pink:
 - [x] Handle invalid input
 - [x] Polish TUI
 - [x] Add Logs
+- [ ] Add settings
 - [ ] Add More Randomness
 - [ ] Add GUI
 - [ ] Improve Clean Up At Exit

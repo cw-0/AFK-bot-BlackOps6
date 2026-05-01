@@ -3,6 +3,7 @@
 
 extern const char* LOG_FILE_PATH;
 extern bool SEND_VERBOSE;
+extern bool LOG_FILE_ENABLED;
 
 
 class Logger {
