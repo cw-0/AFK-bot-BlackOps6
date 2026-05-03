@@ -154,6 +154,11 @@ cmake --build .
     - play for you indefinitely
     - Search for a new match if it ever gets kicked
 
+[!IMPORTANT]
+> Until Custom Keybinds are added, you can change them manually in Movements.cpp by replacing 0x~~ with the last 2
+> places of
+> the `Scan 1 Make` column on https://learn.microsoft.com/en-us/windows/win32/inputdev/about-keyboard-input
+
 ---
 
 ## TODO
@@ -165,6 +170,7 @@ cmake --build .
 - [x] Polish TUI
 - [x] Add Logs
 - [x] Add kicked from match detection and handling
+- [ ] Add Custom keybinds
 - [ ] Add setting for prefered Loadout Slot to choos]
 - [ ] Add settings
 - [ ] Add More Randomness
