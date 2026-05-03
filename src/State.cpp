@@ -10,13 +10,15 @@
 HDC dng = GetDC(NULL);
 int CENTER_MINIMAP_X{152};
 int CENTER_MINIMAP_Y{175};
+int LOADOUT_DETECTION_X{1690};
+int LOADOUT_DETECTION_Y{216};
 int LOADOUT_POSX{228};
 int LOADOUT_POSY{125};
 bool IS_PAUSED{};
 bool IS_SOFT_PAUSED{};
 bool IN_GAME = false;
 bool RUNNING_BOT = true;
-bool RAN_ONCE = false;
+// bool RAN_ONCE = false; // used to not auto click loadout until ran once
 int MISSED_IN_GAME_CHECK = 0;
 bool needThread = true;
 
@@ -31,6 +33,7 @@ void State::checkInGame() {
     int B = (int)GetBValue(c);
     // std::cout << "RGB: (" << R << ", " << G << ", " << B << ")\n";
 
+    // Detect if In Game
     if (R >= 140 && R <= 240) {
       if (G <= 30) {
         if (B >= 140 && B <= 240) {
@@ -44,7 +47,36 @@ void State::checkInGame() {
           continue;
         }
       }
+      // Detect Loadout
+    } // Normal || Leniant
+    c = GetPixel(dng, LOADOUT_DETECTION_X, LOADOUT_DETECTION_Y);
+    R = static_cast<int>(GetRValue(c));
+    G = static_cast<int>(GetGValue(c));
+    B = static_cast<int>(GetBValue(c));
+
+    if (R >= 105 && R <= 250) {   // >= 200 || 105
+      if (G >= 80 && G <= 195) {  // >= 155 || 80
+        if (B >= 30 && B <= 80) { // >= 50 || 30
+          std::this_thread::sleep_for(std::chrono::seconds(3));
+          SetCursorPos(LOADOUT_POSX, LOADOUT_POSY); // Loadout1 Coord
+          INPUT inputs[2] = {};
+          inputs[0].type = INPUT_MOUSE;
+          inputs[0].mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+          inputs[1].type = INPUT_MOUSE;
+          inputs[1].mi.dwFlags = MOUSEEVENTF_LEFTUP;
+          SendInput(2, inputs, sizeof(INPUT));
+          std::string detectedMsg =
+              "Loadout Screen Detected. RGB: (" + std::to_string(R) + ", " +
+              std::to_string(G) + ", " + std::to_string(B) + ")";
+          Logger::write(detectedMsg.c_str());
+          std::string msg = "Clicked Loadout Position (" +
+                            std::to_string(LOADOUT_POSX) + ", " +
+                            std::to_string(LOADOUT_POSY) + ")";
+          Logger::write(msg.c_str());
+        }
+      }
     }
+
     std::string msg = "In Game Pixel NOT Found: (" + std::to_string(R) + ", " +
                       std::to_string(G) + ", " + std::to_string(B) + ")";
     Logger::write(msg.c_str());
@@ -68,30 +100,37 @@ void State::checkState() {
   }
   if (IS_PAUSED || IS_SOFT_PAUSED) {
     Utils::clearTerm();
-    std::cout << (IS_PAUSED ? "Manually Paused\n" : "Paused. Not In Game\n");
-    Logger::write((IS_PAUSED ? "Manually Paused\n" : "Paused. Not In Game\n"));
+    std::cout << (IS_PAUSED
+                      ? "Manually Paused\n"
+                      : "Waiting For Loadout Screen or In Game Detection\n");
+    Logger::write((IS_PAUSED
+                       ? "Manually Paused\n"
+                       : "Waiting For Loadout Screen or In Game Detection\n"));
     while (IS_PAUSED || IS_SOFT_PAUSED) {
-      if (!IS_PAUSED) {
-        if (!RAN_ONCE) {
-
-          continue;
-        }
-        std::this_thread::sleep_for(std::chrono::seconds(3));
-        SetCursorPos(LOADOUT_POSX, LOADOUT_POSY); // Loadout1 Coord
-        INPUT inputs[2] = {};
-        inputs[0].type = INPUT_MOUSE;
-        inputs[0].mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-        inputs[1].type = INPUT_MOUSE;
-        inputs[1].mi.dwFlags = MOUSEEVENTF_LEFTUP;
-        SendInput(2, inputs, sizeof(INPUT));
-
-        if (SEND_VERBOSE) { // no need to create msg if not sending
-          std::string msg = "Clicked Loadout Position (" +
-                            std::to_string(LOADOUT_POSX) + ", " +
-                            std::to_string(LOADOUT_POSY) + ")";
-          Logger::write(msg.c_str(), true);
-        }
-      };
+      // CLICK ON LOADOUT POS
+      // if (!IS_PAUSED) {
+      //   // ONLY CLICK ON LOADOUT POS IF IT HAS BEEN IN GAME ONCE ALREADY
+      //   // if (!RAN_ONCE) {
+      //   //
+      //   //   continue;
+      //   // }
+      //
+      //   std::this_thread::sleep_for(std::chrono::seconds(3));
+      //   SetCursorPos(LOADOUT_POSX, LOADOUT_POSY); // Loadout1 Coord
+      //   INPUT inputs[2] = {};
+      //   inputs[0].type = INPUT_MOUSE;
+      //   inputs[0].mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+      //   inputs[1].type = INPUT_MOUSE;
+      //   inputs[1].mi.dwFlags = MOUSEEVENTF_LEFTUP;
+      //   SendInput(2, inputs, sizeof(INPUT));
+      //
+      //   if (SEND_VERBOSE) { // no need to create msg if not sending
+      //     std::string msg = "Clicked Loadout Position (" +
+      //                       std::to_string(LOADOUT_POSX) + ", " +
+      //                       std::to_string(LOADOUT_POSY) + ")";
+      //     Logger::write(msg.c_str(), true);
+      //   }
+      // };
     }
     Utils::clearTerm();
     std::cout << "Resumed.\n";

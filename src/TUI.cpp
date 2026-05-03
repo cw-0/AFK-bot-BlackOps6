@@ -116,7 +116,7 @@ void TUI::startBot(int waitTime) {
   }
   State::checkState(); // Checks IN_GAME | PAUSED | SOFT_PAUSED and Pauses
   RUNNING_BOT = true;
-  RAN_ONCE = false;
+  // RAN_ONCE = false;
   Utils::clearTerm();
   while (RUNNING_BOT) {
     Presets::commonSoldier();

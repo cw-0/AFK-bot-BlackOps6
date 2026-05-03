@@ -1,4 +1,5 @@
 # Call of Duty: AFK Bot
+
 Extremely Effective at Lowering Skill Based Matchmaking and Gaining XP
 
 **Rewritten in C++ for speed, compatibility, and ease of use**
@@ -7,9 +8,12 @@ Extremely Effective at Lowering Skill Based Matchmaking and Gaining XP
 ![Nuke Medals](Assets/ImagesREADME/NukeMedals.png)
 
 ## Overview
+
 AFK Black Ops 6 Bot is a C++ rewrite of my original Python automation bot.
 
-The original version used libraries such as `pynput`, `pyautogui`, and `OpenCV` to simulate keyboard/mouse input and detect game UI elements. This rewrite moves the core automation logic into C++ using the Windows API for faster input handling, cleaner structure, and better long-term maintainability.
+The original version used libraries such as `pynput`, `pyautogui`, and `OpenCV` to simulate keyboard/mouse input and
+detect game UI elements. This rewrite moves the core automation logic into C++ using the Windows API for faster input
+handling, cleaner structure, and better long-term maintainability.
 
 The bot currently supports:
 
@@ -106,21 +110,25 @@ Useful for tracking:
 - Cleanup behavior
 
 ---
+
 ## Building
 
 Clone the repo:
+
 ```
 git clone https://github.com/cw-0/CodBot.git
 cd AFK-bot-BlackOps6
 ```
 
 Create build folder:
+
 ```
 mkdir build
 cd build
 ```
 
 Configure and Build:
+
 ```
 cmake ..
 cmake --build .
@@ -140,12 +148,14 @@ In Call of Duty settings set mini map player color to pink:
 ---
 
 ## TODO
+
 - [x] Add Hotkeys For Start/Stop
 - [x] Add "In Game" Detection
-- [x] Add Auto Select Loadout 
+- [x] Add Auto Select Loadout
 - [x] Handle invalid input
 - [x] Polish TUI
 - [x] Add Logs
+- [ ] Add setting for prefered Loadout Slot to choos]
 - [ ] Add settings
 - [ ] Add More Randomness
 - [ ] Add GUI
