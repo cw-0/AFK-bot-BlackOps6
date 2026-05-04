@@ -143,7 +143,7 @@ cmake --build .
 > Expects Default Mini Map Location and Size
 > This has not been tested on a non 1920x1080 display
 
-0. Build & Run (directions above)
+0. Build & Run (directions above) or Download Release Version
 1. In Call of Duty settings set mini map player color to pink:
     - interface > gameplay hud > hud presets > colors > You > [select the bottom right color]
 
