@@ -21,7 +21,7 @@ void Presets::commonSoldier() {
   Script::spraySemi(3);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -36,7 +36,7 @@ void Presets::commonSoldier() {
   Movement::rotate(-8000, 200, 200, 0);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -60,7 +60,7 @@ void Presets::commonSoldier() {
   Movement::rotate(-16000, -150, 200, 0);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -69,7 +69,7 @@ void Presets::commonSoldier() {
   Script::dropShotAuto(3);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -87,7 +87,7 @@ void Presets::commonSoldier() {
   Movement::rotate(-2000, -350, 200, 0);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Script::spraySemi(3);
@@ -105,7 +105,7 @@ void Presets::commonSoldier() {
   Movement::rotate(300, 0, 200, 0);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -114,7 +114,7 @@ void Presets::commonSoldier() {
   Movement::move(1, "forward", "right", 2, true);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -126,7 +126,7 @@ void Presets::commonSoldier() {
   Movement::rotate(30000, 0, 200, 0);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -135,7 +135,7 @@ void Presets::commonSoldier() {
   Movement::jump();
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Script::lookEyeLevel();
@@ -147,7 +147,7 @@ void Presets::commonSoldier() {
   Movement::grenade();
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::rotate(0, -8000, 225, 0);
@@ -165,7 +165,7 @@ void Presets::commonSoldier() {
   Script::lookEyeLevel();
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -174,7 +174,7 @@ void Presets::commonSoldier() {
   Movement::rotate(9000, 0, 200, 1);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Script::lookEyeLevel();
@@ -198,7 +198,7 @@ void Presets::commonSoldier() {
   Movement::rotate(-6000, -250, 600, 0);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -210,7 +210,7 @@ void Presets::commonSoldier() {
   Script::lookEyeLevel();
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -219,7 +219,7 @@ void Presets::commonSoldier() {
   Script::dropShotSemi(12);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -234,7 +234,7 @@ void Presets::commonSoldier() {
   Movement::move(2, "forward", "none", 2, true, true);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -262,7 +262,7 @@ void Presets::crackhead() {
   Movement::rotate(50000, 0, 50, 1);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -280,7 +280,7 @@ void Presets::crackhead() {
   Script::spraySemi(3);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -307,7 +307,7 @@ void Presets::crackhead() {
   Script::spraySemi(3);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -319,7 +319,7 @@ void Presets::crackhead() {
   Script::spraySemi(3);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -328,7 +328,7 @@ void Presets::crackhead() {
   Script::spraySemi(3);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();
@@ -346,7 +346,7 @@ void Presets::crackhead() {
   Script::dropShotAuto(3);
   State::checkState();
 
-  Movement::specialGadget();
+  // Movement::specialGadget();
   State::checkState();
 
   Movement::skipKillcam();

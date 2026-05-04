@@ -214,13 +214,15 @@ void Movement::skipKillcam() {
   Utils::keyPress(E_KEY, "E Key");
 }
 
-void Movement::specialGadget() {
-  std::cout << "Using Special Gadget\n";
-  std::this_thread::sleep_for(std::chrono::seconds(1));
-  WORD C_KEY = 0x2E; // C key
-  Utils::keyPress(C_KEY, "C Key");
-  std::this_thread::sleep_for(std::chrono::seconds(1));
-}
+// as good as this feature could be for getting xp it forces the same key for
+// report player in killcams, bringing up an unwanted menu
+// void Movement::specialGadget() {
+//   std::cout << "Using Special Gadget\n";
+//   std::this_thread::sleep_for(std::chrono::seconds(1));
+//   WORD C_KEY = 0x2E; // C key
+//   Utils::keyPress(C_KEY, "C Key");
+//   std::this_thread::sleep_for(std::chrono::seconds(1));
+// }
 
 // --- MOUSE MOVEMENTS ---
 
